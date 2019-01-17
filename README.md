@@ -6,4 +6,4 @@ This is a tiny tool to create custom labels for drive caddies.
 
 Works with Dell Poweredge Gen11 and Hp Proliant G5, 6 and 7 drive caddies.
 
-Visit http://familjencohen.se/label/ for a live view.
+Visit https://homelablabelmaker.shurilla14.com/ for a live view.
