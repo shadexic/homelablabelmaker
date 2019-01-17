@@ -1,265 +1,261 @@
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-<!-- 
-Originally created by /u/tollsjo for the /r/homelab community in December 2016
-License: Creative Commons CC BY-SA 4.0
-
-Modified by /u/is4m4 dec 2016
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Homelab caddy label maker</title>
+  <!-- 
+  Originally created by /u/tollsjo for the /r/homelab community in December 2016
+  License: Creative Commons CC BY-SA 4.0
 -->
-<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
-<style>
+<link rel="stylesheet" href="css/configurator.min.css">
+<link rel="stylesheet" href="css/hpLabel.min.css">
+<link rel="stylesheet" href="css/dellLabel.min.css">
+<link rel="stylesheet" href="css/font-awesome.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css" integrity="sha384-AysaV+vQoT3kOAXZkl02PThvDr8HYKPZhNT5h/CXfBThSRXQ6jW5DO2ekP5ViFdi" crossorigin="anonymous">
 
-body {
-   font-family: Lato, arial, sans-serif;
-}
-
-#top {
-   width: 100%;
-   margin: 0;
-   padding: 0;
-   background-color:#30333A;
-   top: 0;
-   left: 0;
-   color: white;
-   font-family: Lato, arial, sans-serif;
-   font-size: 42px;
-}
-
-/* Dell Gen11 (3.5in/2.5in) (14*8mm) */
-
-div.dellwide {
-  width: 1.4cm;
-  height: 0.8cm;
-  background: linear-gradient(to bottom, #E0E0E0 50%, #000000 50%);
-  -webkit-clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 10% 100%, 0% 80%);
-  clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 10% 100%, 0% 80%);
-}
-
-div.dellwide div.interface{
-  vertical-align: top;  
-  text-align: center;
-  padding-left: 0.1cm;
-  color: black;
-  font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
-  font-size: 13px;
-}
-
-div.dellwide div.size{
-  vertical-align: bottom;
-  line-height: 0.4cm;
-  text-align: center;  
-  color: white;
-  font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
-  font-size: 10px;
-}
-
-/*  Dell Gen11 (2.5in) (12*12mm) */
-
-div.dellslim {
-  width: 1.2cm;
-  height: 1.2cm;
-  background: linear-gradient(to bottom, #E0E0E0 33%, #000000 33%);
-  -webkit-clip-path: polygon(0% 20%, 20% 0%, 100% 0%, 100% 100%, 0% 100%);
-  clip-path: polygon(0% 20%, 20% 0%, 100% 0%, 100% 100%, 0% 100%);
-}
-
-div.dellslim div.interface{
-  vertical-align: top;
-  text-align: center;
-  padding-left: 0.1cm;
-  color: black;
-  font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
-  font-size: 13px;
-}
-
-div.dellslim div.size{
-  vertical-align: bottom;
-  line-height: 0.4cm;
-  text-align: center;
-  color: white;
-  font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
-  font-size: 10px;
-  white-space: pre-wrap; 
-}
-
-/*  HP Gen 5/6/7 (12.5*9mm)*/
-
-.hp {
-  width: 1.2cm;
-  height: 0.9cm;
-}
-
-.hp div.speed{
-  border-top: thin solid #000000;
-  line-height: 0.2cm;
-  text-align: center;
-  background-color: #ffffff;
-  color: black;
-  font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
-  font-size: 5px;
-}
-
-.hp div.interface{
-  line-height: 0.2cm;
-  text-align: center;
-  background-color: #8B008B;
-  color: white;
-  font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
-  font-size: 5px;
-}
-
-.hp div.size{
-  line-height: 0.3cm;
-  text-align: center;
-  background-color: #000000;
-  color: white;
-  font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
-  font-size: 10px;
-}
-
-.hp div.serial{
-  line-height: 0.2cm;
-  text-align: center;
-  background-color: #000000;
-  color: white;
-  font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
-  font-size: 4px;
-}
-
-</style>
 </head>
 <body>
-<div id="top" class="hide">
-<img width="70px" height="70px" src="./reddit-snoo.jpg"/>
-Homelab caddy label maker
+
+<div class="container">
+  <div class="row">
+  <div id="topContainer">
+      <img width="70px" height="70px" vspace="3" src="http://homelablabelmaker.shurilla14.com/reddit_snoo.png"/>
+      Homelab caddy label maker
+    </div>
+
+    <div id='instruction'>
+      <h3>Print your own labels for drive caddies.</h3>
+      <p>Use the configurator to create the desired label(s), then click on "Print Page" to print it out. Make sure to print in the original size.</p> 
+      <div class="alert alert-info alert-dismissible fade in" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        On Chrome after selecting print go to "More Settings" and check "Background Graphics".
+      </div>
+    </div>
+
+    <div id='mainContainer' class='container'>
+      <button type="button" class="btn btn-outline-warning" data-toggle="modal" data-target="#vendorPicker" id="btnStartConfigurator">Start</button>
+      <button type="button" class="btn btn-outline-success" id="btnPrintPage">Print Page</button>
+      <button type="button" class="btn btn-outline-danger" id="btnRestartApp">Reset</button>
+
+      <br/>
+      <br/>
+
+      <div id="exampleContainer">
+        <b>Example</b>
+        <table id="exampleTable">
+          <tbody>
+          </tbody>
+        </table>
+      </div>
+
+      <div id="printOutContainer">
+        <b>Print Out</b>
+        <table id="printOutTable">
+          <tbody>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div> <!-- END OF THE MAIN CONTAINER -->
+
+<!--footer-->
+<footer class="footer">
+  <div class="container">
+    <div class="row">
+    <hr>
+      <div class="col-lg-12">
+        <div class="col-md-8">
+          Originally created by <a href="https://www.reddit.com/user/tollsjo">/u/tollsjo</a> for <a href="https://www.reddit.com/r/homelab/">/r/homelab</a> in December 2016 | #initfortheblinkenlights</div>
+        <div class="col-md-4">
+          <p class="muted pull-right"><a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Modal -->
+<div class="modal fade" id="vendorPicker" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <center><h3>Choose a Disk Vendor</h3></center>
+      </div>
+      <div class="modal-body">
+        
+        <table width='100%' id="vendors" class="ui-widget ui-widget-content">
+          <tbody>
+            <tr>
+              <td width='50%'><img id='hp' src="img/hpe.jpg""/></td>
+              <td width='50%'><img id='dell' src="img/dell.png""/></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 </div>
-<div class="hide" id="frm">
-<h3>Print your own labels for drive caddies.</h3>
-<p>Fill out the form and print the page from the browser. Make sure to print in the original size. In Safari: Select "Print Backgrounds".</p>
-<p>#initfortheblinkenlights</p>
 
-<br/>
-
-First, Pick a base label:
-
-<script>
-    //types of labels are defined here, the key is the internal name and global class used by the css to apply to the label
-    //the fields generate inputs and divs with the supplied class
-    types = {
-        dellwide: { title : "Dell Gen11 (3.5in/2.5in) (14*8mm)", 
-                    fields: [
-                        { title: "Interface:", class:"interface", type: "text", value:"SATA" },
-                        { title: "Size/Speed:", class:"size", type: "text", value:"500GB" }
-                    ]
-        },
-        dellslim: { title : "Dell Gen11 (2.5in) (12*12mm)", 
-                    fields: [
-                        { title: "Interface:", class:"interface", type: "text", value:"SATA" },
-                        { title: "Size/Speed:", class:"size", type: "text", value:"500GB 10K" }
-                    ]
-        },
-        hp      : { title : "HP Gen 5/6/7 (12.5*9mm)", 
-                    fields: [
-                        { title: "Speed", class:"speed", type: "text", value:"Dual Port 10K" },
-                        { title: "Interface", class:"interface", type: "text", value:"SAS" },
-                        { title: "Size", class:"size", type: "text", value:"300 GB" },
-                        { title: "Serial", class:"serial", type: "text", value:"SPARE 123456-789" }
-                    ]
-        },
-    }
-    
-    //generate the type select box with the title and internal name as value
-    var typeselect = $('<select>').appendTo('#frm');
-    typeselect.append($("<option>").attr('value', undefined).text(""));
-    for (var t in types) {
-        typeselect.append($("<option>").attr('value', t).text(types[t].title));
-    }
-
-    //handler for when the selection of label type changes
-    //indirectly renders the options with default values, then draws the labels
-    var renderType = function() {
-        var type = typeselect.val()
-        renderOptions()
-        renderLabels()
-    }
-    typeselect.change(renderType)
-
-    //generate the options with the defaults defined above
-    var renderOptions = function() {
-        var t=typeselect.val() //t = type
-        var f=types[t].fields  //f = the type's options/fields
-        
-        $("#options").empty().append(types[t].title+":<br />")
-        for (prop in f) {
-            console.log(f[prop]["title"]);
-            $("#options").append(f[prop].title+': <input type="'+f[prop].type+'" class="input-'+f[prop].class+'" value="'+f[prop].value+'" oninput="renderLabels()"><br />');
-        }
-        
-        //render the inputs that control number of rows and collumns that renderLabels renders
-        //min and max options so we don't go below 1 and not over 13, experimentally proven to fill a page
-        $("#options").append('Collumns: <input type="number" id="cols" value="5" min=1 max=13 onchange="renderLabels()"><br />');
-        $("#options").append('Rows:     <input type="number" id="rows" value="2" min=1 max=20 onchange="renderLabels()"><br />');
-    }
-
-    //actually renders the labels based on the options that are set
-    var renderLabels = function() {
-        var t=typeselect.val() //selected type name
-        var f=types[t].fields  //it's option fields
-
-        $("#labels").empty()//erase the currently displayed labels, we are regenerating them from scratch
-        //generate one label, a bit ugly this way
-        var onelabel = '<td><div class="'+t+'">'
-        for (prop in f) {
-            onelabel += '<div class="'+f[prop].class+'">'+$(".input-"+f[prop].class).val()+'</div>'
-        }
-        onelabel += '</div></td>'
-        
-        //create a table row and copy labels into it
-        var row = $("<tr>")
-        for (i = 0; i < $("#cols").val(); i++) {
-            row.append(onelabel)
-        }
-        //clone the row as many times as specified
-        //if we didn't clone it would just move the row into the table multiple times and show up as 1 row
-        for (i = 0; i < $("#rows").val(); i++) {
-            $("#labels").append(row.clone())
-        }
-
-    }
-    
-    //dirty sleep function, probably hangs the tab/window :'(
-    function sleep(millis){
-        var date = new Date();
-        var curDate = null;
-        do { curDate = new Date(); }
-        while(curDate-date < millis);
-    }
-    
-    //hides elements with the hide class so we can then print a page without the ink wasting stuff on there :)
-    //after the browser generates the print version we can switch back.
-    //using a print specific css could be better but this is a fun hack
-    var hideandprint = function() {
-        $(".hide").hide()
-        sleep(200)
-        window.print()
-        sleep(100)
-        $(".hide").show()
-    }
-
-</script>
-
-<hr />
-<div id="options"></div>
-<hr/>
+<!-- Modal -->
+<div class="modal fade" id="configuratorMain" tabindex="-1" role="dialog" aria-labelledby="gridModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <center><h3>Disk Configurator</h3></center>
+      </div>
+      <div class="modal-body">
+        <div class="container-fluid configMainRow">
+          <div class="row">
+            <div class="col-md-6">
+              Form Factor:<br/>
+              <div id='formFactor' class="btn-group" data-toggle="buttons">
+                <label for="SFF" class="btn btn-secondary btn-sm active">
+                  <input type="radio" name="formFactor" id="SFF" autocomplete="off" checked/>2.5" (SFF)
+                </label>
+                <label for="LFF" class="btn btn-secondary btn-sm">
+                  <input type="radio" name="formFactor" id="LFF"/>3.5" (LFF)
+                </label>
+              </div>
+            </div>
+            <div class="col-md-6">
+              Interface Type:<br/>
+              <div id='interfaceType' class="btn-group" data-toggle="buttons">
+                <label for="dualPort" class="btn btn-secondary btn-sm">
+                  <input type="radio" name="interfaceType" id="dualPort">Dual Port
+                </label>
+                <label for="singlePort" class="btn btn-secondary btn-sm active">
+                  <input type="radio" name="interfaceType" id="singlePort" checked>Single Port
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              Interface Speed:<br/>
+              <div id='interfaceSpeed' class="btn-group" data-toggle="buttons">
+                <label for="SATA1" role='button' class="btn btn-secondary btn-sm">
+                  <input type="radio" name="interfaceSpeed" id="SATA1">1.5 Gb
+                </label>
+                <label for="SATA2/SAS" class="btn btn-secondary btn-sm">
+                  <input type="radio" name="interfaceSpeed" id="SATA2/SAS">3 Gb
+                </label>
+                <label for="SATA3/SAS2" class="btn btn-secondary btn-sm active">
+                  <input type="radio" name="interfaceSpeed" id="SATA3/SAS2" checked>6 Gb
+                </label>
+                <label for="SAS3" class="btn btn-secondary btn-sm disabled" style="pointer-events: none;">
+                  <input type="radio" name="interfaceSpeed" id="SAS3">12 Gb
+                </label>
+                <label for="SAS4" class="btn btn-secondary btn-sm disabled" style="pointer-events: none;">
+                  <input type="radio" name="interfaceSpeed" id="SAS4">22.5 Gb
+                </label>
+              </div>
+            </div>
+            <div class="col-md-6">
+              Disk Speed:<br/>
+              <div id='diskSpeed' class="btn-group" data-toggle="buttons">          
+                <label for="5.4K" class="btn btn-secondary btn-sm">
+                  <input type="radio" name="diskSpeed" id="5.4K">5.4K
+                </label>
+                <label for="7.2K" class="btn btn-secondary btn-sm active">
+                  <input type="radio" name="diskSpeed" id="7.2K" checked>7.2K
+                </label>
+                <label for="10K" class="btn btn-secondary btn-sm">
+                  <input type="radio" name="diskSpeed" id="10K">10K
+                </label>
+                <label for="15K" class="btn btn-secondary btn-sm">
+                  <input type="radio" name="diskSpeed" id="15K">15K
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              Disk Type:<br/>
+              <div id='diskType' class="btn-group" data-toggle="buttons">
+                <label for="SAS" class="btn btn-secondary btn-sm">
+                  <input type="radio" name="diskType" id="SAS">SAS
+                </label>
+                <label for="SATA" class="btn btn-secondary btn-sm active">
+                  <input type="radio" name="diskType" id="SATA" checked>SATA
+                </label>
+                <label for="SSD" class="btn btn-secondary btn-sm">
+                  <input type="radio" name="diskType" id="SSD">SSD
+                </label>
+                <label for="SASMDL" class="btn btn-secondary btn-sm">
+                  <input type="radio" name="diskType" id="SASMDL">SAS MDL
+                </label>
+                <label for="SATAMDL" class="btn btn-secondary btn-sm">
+                  <input type="radio" name="diskType" id="SATAMDL">SATA MDL
+                </label>
+                <label for="FC" class="btn btn-secondary btn-sm">
+                  <input type="radio" name="diskType" id="FC">Fibre Channel
+                </label>
+                <label for="SSNW" class="btn btn-secondary btn-sm">
+                  <input type="radio" name="diskType" id="SSNW">SSD SSNW
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <form data-toggle="validator" class="form-inline">
+                <div class="form-group has-feedback">
+                  <label for="capacity">Capacity</label><br/>
+                  <div class="input-group">
+                    <input class="form-control" type="text" pattern="^[0-9]{1,5} (GB|TB)$" maxlength="8" placeholder="1 TB" id="capacity" required>
+                  </div>
+                </div>
+                <div class="form-group has-feedback">
+                  <label for="serial">Serial</label><br/>
+                  <div class="input-group">
+                    <input class="form-control" type="text" pattern="^[_\s\-A-z0-9]{1,}$" maxlength="18" placeholder="SPARE 123456-789" id="serial" required>
+                  </div>
+                </div>
+                <div class="form-group has-feedback">
+                  <label for="multiplier">How many disks?</label><br/>
+                  <div class="input-group">
+                    <input class="form-control" type="text" pattern="^[0-9]{1,5}$" maxlength="5" placeholder="Optional" id="multiplier">
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div>
+                <div class="pull-left switch-label">Add More</div>
+                <div id='addMoreContainer' class="material-switch pull-left">
+                  <input id="addMore" type="checkbox">
+                  <label for="addMore" class="label-warning"></label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> 
+      <div class="modal-footer">
+        <button type="button" id='addNewDisk' class="btn btn-outline-success btn-sm">Add Disk(s)</button>
+      </div>
+    </div>
+  </div>
 </div>
-<table id="labels">
-</table>
-<button class="hide" onclick="hideandprint()">Print!</button>
 
-<br/>
-<p>Originally created by /u/tollsjo for the /r/homelab community in December 2016<p>
-<p>Modified by /u/is4m4 because he could<p>
-<p>License: Creative Commons CC BY-SA 4.0. Single file source. Download, improve, rehost and share with the community.</p>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/js/bootstrap.min.js" integrity="sha384-BLiI7JTZm+JWlgKa0M0kGRpJbF2J8q+qreVrKBC47e3K6BW78kGLrCkeRX6I9RoK" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.8/validator.js"></script>
+<script src="js/configurator.min.js"></script>
 
 </body>
 </html>
