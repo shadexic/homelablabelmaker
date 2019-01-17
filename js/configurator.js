@@ -345,7 +345,7 @@ $( function() {
         ]
       },
       dellSFF: {
-        title: 'Dell Gen11 2.5" (SFF)',
+        title: 'Dell Gen11/12/13/14 2.5" (SFF)',
         vendorType: 'dell',
         fields: [
           {formFactor: 'SFF', interfaceType: '', interfaceSpeed: '', diskSpeed: '7.2K', diskType: 'SATA', diskCapacity: '512 GB', diskSerial: ''},
@@ -357,7 +357,7 @@ $( function() {
         ]
       },
       dellLFF: {
-        title: 'Dell Gen11 3.5" (LFF)',
+        title: 'Dell Gen11/12/13/14 3.5" (LFF)',
         vendorType: 'dell',
         fields: [
           {formFactor: 'LFF', interfaceType: '', interfaceSpeed: '', diskSpeed: '15K', diskType: 'SAS', diskCapacity: '1 TB', diskSerial: ''},
