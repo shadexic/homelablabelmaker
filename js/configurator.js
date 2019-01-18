@@ -352,7 +352,7 @@ $( function() {
           {formFactor: 'SFF', interfaceType: '', interfaceSpeed: '', diskSpeed: '5.4K', diskType: 'SATA', diskCapacity: '1 TB', diskSerial: ''},
           {formFactor: 'SFF', interfaceType: '', interfaceSpeed: '', diskSpeed: '10K', diskType: 'SATA', diskCapacity: '2 TB', diskSerial: ''},
           {formFactor: 'SFF', interfaceType: '', interfaceSpeed: '', diskSpeed: '15K', diskType: 'SATA', diskCapacity: '146 GB', diskSerial: ''},
-          {formFactor: 'SFF', interfaceType: '', interfaceSpeed: '', diskSpeed: '', diskType: 'SSD', diskCapacity: '256 GB', diskSerial: ''},
+          {formFactor: 'SFF', interfaceType: '', interfaceSpeed: '', diskSpeed: 'SSD', diskType: 'SATA', diskCapacity: '480 GB', diskSerial: ''},
           {formFactor: 'SFF', interfaceType: '', interfaceSpeed: '', diskSpeed: '', diskType: 'SSD', diskCapacity: '512 GB', diskSerial: ''},
         ]
       },

@@ -176,6 +176,9 @@
                 <label for="15K" class="btn btn-secondary btn-sm">
                   <input type="radio" name="diskSpeed" id="15K">15K
                 </label>
+				<label for="SSD" class="btn btn-secondary btn-sm">
+                  <input type="radio" name="diskSpeed" id="SSD">SSD
+                </label>
               </div>
             </div>
           </div>
@@ -213,7 +216,7 @@
                 <div class="form-group has-feedback">
                   <label for="capacity">Capacity</label><br/>
                   <div class="input-group">
-                    <input class="form-control" type="text" pattern="^[0-9]{1,5} (GB|TB)$" maxlength="8" placeholder="1 TB" id="capacity" required>
+                    <input class="form-control" type="text" pattern="^[0-9\.]{1,5} .?B$" maxlength="8" placeholder="1 TB" id="capacity" required>
                   </div>
                 </div>
                 <div class="form-group has-feedback">
