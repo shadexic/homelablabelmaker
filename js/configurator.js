@@ -364,7 +364,7 @@ $( function() {
           {formFactor: 'LFF', interfaceType: '', interfaceSpeed: '', diskSpeed: '10K', diskType: 'SAS', diskCapacity: '2 TB', diskSerial: ''},
           {formFactor: 'LFF', interfaceType: '', interfaceSpeed: '', diskSpeed: '7.2K', diskType: 'SATA', diskCapacity: '4 TB', diskSerial: ''},
           {formFactor: 'LFF', interfaceType: '', interfaceSpeed: '', diskSpeed: '5.4K', diskType: 'SATA', diskCapacity: '8 TB', diskSerial: ''},
-          {formFactor: 'LFF', interfaceType: '', interfaceSpeed: '', diskSpeed: '', diskType: 'SSD', diskCapacity: '512 GB', diskSerial: ''},
+          {formFactor: 'LFF', interfaceType: '', interfaceSpeed: '', diskSpeed: 'SSD', diskType: 'SATA', diskCapacity: '480 GB', diskSerial: ''},
           {formFactor: 'LFF', interfaceType: '', interfaceSpeed: '', diskSpeed: '', diskType: 'SSD', diskCapacity: '1 TB', diskSerial: ''},
         ]
       }
