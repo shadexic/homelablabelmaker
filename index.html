@@ -9,7 +9,8 @@
   License: Creative Commons CC BY-SA 4.0
 -->
 <link rel="stylesheet" href="css/configurator.min.css">
-<link rel="stylesheet" href="css/hpLabel.min.css">
+<link rel="stylesheet" href="css/hpLabel.css">
+<link rel="stylesheet" href="css/hpLabelGen8.css">
 <link rel="stylesheet" href="css/dellLabel.min.css">
 <link rel="stylesheet" href="css/font-awesome.min.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css" integrity="sha384-AysaV+vQoT3kOAXZkl02PThvDr8HYKPZhNT5h/CXfBThSRXQ6jW5DO2ekP5ViFdi" crossorigin="anonymous">
@@ -117,7 +118,7 @@
       <div class="modal-body">
         <div class="container-fluid configMainRow">
           <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-4">
               Form Factor:<br/>
               <div id='formFactor' class="btn-group" data-toggle="buttons">
                 <label for="SFF" class="btn btn-secondary btn-sm active">
@@ -128,7 +129,18 @@
                 </label>
               </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-4">
+              Gen:<br/>
+              <div id='gen' class="btn-group" data-toggle="buttons">
+                <label for="gen5" class="btn btn-secondary btn-sm active">
+                  <input type="radio" name="gen" id="gen5" autocomplete="off" checked/>5/6/7
+                </label>
+                <label for="gen8" class="btn btn-secondary btn-sm">
+                  <input type="radio" name="gen" id="gen8"/>8/9
+                </label>
+              </div>
+            </div>
+            <div class="col-md-4">
               Interface Type:<br/>
               <div id='interfaceType' class="btn-group" data-toggle="buttons">
                 <label for="dualPort" class="btn btn-secondary btn-sm">
@@ -220,7 +232,7 @@
                   </div>
                 </div>
                 <div class="form-group has-feedback">
-                  <label for="serial">Serial</label><br/>
+                  <label for="serial">Serial/Part#</label><br/>
                   <div class="input-group">
                     <input class="form-control" type="text" pattern="^[_\s\-A-z0-9]{1,}$" maxlength="18" placeholder="SPARE 123456-789" id="serial" required>
                   </div>
@@ -258,7 +270,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/js/bootstrap.min.js" integrity="sha384-BLiI7JTZm+JWlgKa0M0kGRpJbF2J8q+qreVrKBC47e3K6BW78kGLrCkeRX6I9RoK" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.8/validator.js"></script>
-<script src="js/configurator.min.js"></script>
+<script src="js/configurator.js"></script>
 
 </body>
 </html>
