@@ -10,13 +10,15 @@ $( function() {
   interfaceTypeSelector   = $('#configuratorMain #interfaceType label'),
   interfaceSpeedSelector  = $('#configuratorMain #interfaceSpeed label'),
   formFactorSelector      = $('#configuratorMain #formFactor label');
+  genSelector             = $('#configuratorMain #gen label');
 
   var objectsToReset = [
     { object: diskSpeedSelector, defaultField: '7.2K' },
     { object: diskTypeSelector, defaultField: 'SATA' },
     { object: interfaceTypeSelector, defaultField: 'singlePort' },
     { object: interfaceSpeedSelector, defaultField: 'SATA2/SAS' },
-    { object: formFactorSelector, defaultField: 'SFF' }
+    { object: formFactorSelector, defaultField: 'SFF' },
+    { object: genSelector, defaultField: 'gen5' }
   ];
   
   createFormatTool();
@@ -31,7 +33,7 @@ $( function() {
     $('#configuratorMain').validator().on('submit', function (e) {
       if (e.isDefaultPrevented()) {
         $(this).validator('validate');
-        console.warn ('Validation failed, the user should re-check the fileds before resubmitting');
+        console.warn ('Validation failed, the user should re-check the fields before resubmitting');
       } else {
         addUser();
       }
@@ -57,6 +59,7 @@ $( function() {
       if (vendorType === 'dell') {
         disableSelector(interfaceTypeSelector);
         disableSelector(interfaceSpeedSelector);
+        disableSelector(genSelector);
         serial.attr('disabled',true).removeAttr('required').attr('placeholder','Not Applicable').val('');
         ['SASMDL', 'SATAMDL', 'FC', 'SSNW'].forEach( function(s) {
           disableSelectorOption(diskTypeSelector, s);
@@ -70,9 +73,40 @@ $( function() {
     $('#configuratorMain').on('hidden.bs.modal', function () {
       resetConfigurator();
     });
+    
+    $('#gen label').on('change', function (){
+      var gen = $('#gen input:radio:checked').parent().text().trim();
+
+      console.log (gen);
+      if (gen !== '5/6/7') {
+        console.info ('Gen' + gen + ' is selected disable unused options');
+        disableSelector(interfaceTypeSelector);
+        disableSelector(interfaceSpeedSelector);
+        //disableSelectorOption(interfaceSpeedSelector, 'SASMDL');
+        ['SASMDL', 'SATAMDL', 'FC', 'SSNW'].forEach( function(s) {
+          disableSelectorOption(diskTypeSelector, s);
+        });
+      } else { 
+          console.info ('Gen' + gen + ' is selected enable disabled options');
+          if (vendorType !== 'dell') {
+              ['SASMDL', 'SATAMDL', 'FC', 'SSNW'].forEach( function(s) {
+                enableSelectorOption(diskTypeSelector, s);
+              });
+          }
+          if (isSelectorDisabled(interfaceTypeSelector)) {
+            enableSelector(interfaceTypeSelector);
+          }
+          if (isSelectorDisabled(interfaceSpeedSelector)) {
+            enableSelector(interfaceSpeedSelector);
+          }
+      }
+    });
 
     $('#diskType label').on('change', function (){
       var diskType = $('#diskType input:radio:checked').parent().text().trim();
+      var gen = $('#gen input:radio:checked').parent().text().trim();
+      console.info('Gen ' + gen + ' selected, exiting diskType change')
+      if (gen !== '5/6/7') return;
 
       console.log (diskType);
       if (/SSD/gi.test(diskType)) {
@@ -100,22 +134,29 @@ $( function() {
     });
   }
 
-  function hpTypeToColor(type,speed,obj) {
+  function hpTypeToColor(gen,type,speed,obj) {
     diskSpeedObj = obj.find('.speed');
     diskTypeObj  = obj.find('.interface');
     labelDivider = obj.find('.divider');
-      
-    switch (true) {
-      case /^SAS$/gi.test(type):
-        labelDivider.addClass('hpPurple'); break;
-      case /^(SAS MDL|SATA|SATA MDL)$/gi.test(type):
-        labelDivider.addClass('hpCyan'); break;
-      case /^Fibre Channel$/gi.test(type):
-        labelDivider.addClass('hpOrange'); break;
-      case /^SSD$/gi.test(type):
-        labelDivider.addClass('hpWhite'); break;
-      case /SSNW/gi.test(type):
-        labelDivider.addClass('hpSSNW'); break;
+    
+    if (gen == "gen5" ) {
+        console.info ('HP gen 5/6/7 label colours');
+        switch (true) {
+          case /^SAS$/gi.test(type):
+            labelDivider.addClass('hpPurple'); break;
+          case /^(SAS MDL|SATA|SATA MDL)$/gi.test(type):
+            labelDivider.addClass('hpCyan'); break;
+          case /^Fibre Channel$/gi.test(type):
+            labelDivider.addClass('hpOrange'); break;
+          case /^SSD$/gi.test(type):
+            labelDivider.addClass('hpWhite'); break;
+          case /SSNW/gi.test(type):
+            labelDivider.addClass('hpSSNW'); break;
+        }
+    }
+    else if (gen == "gen8" ) {
+        console.info ('HP gen 8/9 label colours');
+        //no colours
     }
 
     if ( !/(DP|Dual|Dual Port)/.test(speed)) {
@@ -128,7 +169,7 @@ $( function() {
 
   }
 
-  function addUser(e, formFactor, interfaceType, interfaceSpeed, diskSpeed, diskType, diskCapacity, diskSerial, targetTable, targetNumber ) {
+  function addUser(e, formFactor, interfaceType, interfaceSpeed, diskSpeed, diskType, diskCapacity, diskSerial, targetTable, targetNumber, gen ) {
     diskSpeedLabel = '';
     diskSpeedDell  = '';
 
@@ -141,8 +182,9 @@ $( function() {
     diskSerial      = diskSerial      === undefined ? serial.val()                                  : diskSerial;
     targetTable     = targetTable     === undefined ? 'printOutTable'                               : targetTable;
     targetNumber    = targetNumber    === undefined ? 8                                             : targetNumber;
+    gen             = gen             === undefined ? $('#gen label.active').attr('for')            : gen;
 
-    console.info ('FF: ' + formFactor + ' -- IF: ' + interfaceType + ' -- IFS: ' + interfaceSpeed + ' -- DSp: ' + diskSpeed + ' -- DT: ' + diskType + ' -- DC: ' + diskCapacity + ' -- DSe: ' + diskSpeed + ' -- TT: ' + targetTable + ' -- TN: ' + targetNumber);
+    console.info ('FF: ' + formFactor + ' -- Gen: ' + gen + ' -- IF: ' + interfaceType + ' -- IFS: ' + interfaceSpeed + ' -- DSp: ' + diskSpeed + ' -- DT: ' + diskType + ' -- DC: ' + diskCapacity + ' -- DSe: ' + diskSpeed + ' -- TT: ' + targetTable + ' -- TN: ' + targetNumber);
 
     if ( targetTable === 'printOutTable' ) {
       console.log ('WTF');
@@ -150,25 +192,27 @@ $( function() {
       $('#exampleContainer').hide();
     }
 
-    switch (interfaceSpeed) {
-      case 'SATA2/SAS':
-        if (/SATA/.test(diskType)){
-          diskSpeedLabel = diskSpeedLabel.concat('3G ');
-        }
-        break;
-      case 'SATA3/SAS2':
-        diskSpeedLabel = diskSpeedLabel.concat('6G '); break;
-      case 'SAS3':
-        diskSpeedLabel = diskSpeedLabel.concat('12G '); break;
-      case 'SAS4':
-        diskSpeedLabel = diskSpeedLabel.concat('22G '); break;
-    }
+    if (gen !== 'gen8' ) {
+      switch (interfaceSpeed) {
+        case 'SATA2/SAS':
+          if (/SATA/.test(diskType)){
+            diskSpeedLabel = diskSpeedLabel.concat('3G ');
+          }
+          break;
+        case 'SATA3/SAS2':
+          diskSpeedLabel = diskSpeedLabel.concat('6G '); break;
+        case 'SAS3':
+          diskSpeedLabel = diskSpeedLabel.concat('12G '); break;
+        case 'SAS4':
+          diskSpeedLabel = diskSpeedLabel.concat('22G '); break;
+      }
 
-    if (interfaceType === 'dualPort') {
-      if (diskSpeedLabel === '') {
-        diskSpeedLabel = diskSpeedLabel.concat('Dual Port ');
-      } else {
-        diskSpeedLabel = diskSpeedLabel.concat('DP ');
+      if (interfaceType === 'dualPort') {
+        if (diskSpeedLabel === '') {
+          diskSpeedLabel = diskSpeedLabel.concat('Dual Port ');
+        } else {
+          diskSpeedLabel = diskSpeedLabel.concat('DP ');
+        }
       }
     }
 
@@ -178,7 +222,13 @@ $( function() {
     }
 
     if (/(SSD|SSNW)/i.test(diskType)) {
-      diskSpeedLabel = 'SATA SSD';
+      if (gen === 'gen8') {
+        diskSpeedLabel = 'SSD';
+	diskType = 'SATA';
+      }
+      else {
+        diskSpeedLabel = 'SATA SSD';
+      }
     }
 
     var valid = true;
@@ -186,13 +236,29 @@ $( function() {
     switch (vendorType) {
       case 'hp': 
         console.info ('Disk Speed HP Label : ' + diskSpeedLabel);
-        switch (formFactor) {
-          case 'SFF':
-            labelString = "<div class='hp SFF'><div class='speed'>{0}</div><div class='interface divider'>{1}</div><div class='capacity'>{2}</div><div class='serial'>{3}</div></div>".format(diskSpeedLabel,diskType,diskCapacity,diskSerial);
+        switch (gen) {
+          case 'gen5':
+            console.info ('HP: gen 5/6/7 label');
+            switch (formFactor) {
+              case 'SFF':
+                labelString = "<div class='hp SFF'><div class='speed'>{0}</div><div class='interface divider'>{1}</div><div class='capacity'>{2}</div><div class='serial'>{3}</div></div>".format(diskSpeedLabel,diskType,diskCapacity,diskSerial);
+                break;
+              case 'LFF':
+                labelString = "<div class='hp LFF'><div class='speed'>{0}</div><div class='interface'>{1}</div><hr class='divider'/><div class='capacity'>{2}</div><div class='serial'>{3}</div></div>".format(diskSpeedLabel,diskType,diskCapacity,diskSerial);
+                break;
+            }
             break;
-          case 'LFF':
-            labelString = "<div class='hp LFF'><div class='speed'>{0}</div><div class='interface'>{1}</div><hr class='divider'/><div class='capacity'>{2}</div><div class='serial'>{3}</div></div>".format(diskSpeedLabel,diskType,diskCapacity,diskSerial);
-          break;
+          case 'gen8':
+            console.info ('HP: gen 8/9 label');
+            switch (formFactor) {
+              case 'SFF':
+                labelString = "<div class='hpGen8 SFF'><div class='speed'>{0}</div><div class='divider'></div><div class='interface'>{1}</div><div class='capacity'>{2}</div><div class='divider'></div><div class='serial'>{3}</div></div>".format(diskSpeedLabel,diskType,diskCapacity,diskSerial);
+                break;
+              case 'LFF':
+                labelString ="<div class='hpGen8 LFF'><div class='speed'>{0}</div><div class='divider'></div><div class='interface'>{1}</div><div class='capacity'>{2}</div><div class='divider'></div><div class='serial'>{3}</div></div>".format(diskSpeedLabel,diskType,diskCapacity,diskSerial); 
+                break;
+            }
+            break;            
         }
         break;
       case 'dell':
@@ -211,7 +277,7 @@ $( function() {
     $( '#' + targetTable + ' tbody tr:last' ).append('<td>' + labelString + '</td>');
     if (($('#' + targetTable + 'tr').length === 0) || $('#' + targetTable + ' tr:last td').length >= targetNumber) { $( '#' + targetTable + ' tbody' ).append( '</tr>' ); }
 
-    hpTypeToColor(diskType,diskSpeedLabel,$( '#' + targetTable + ' tbody tr td' ).last());
+    hpTypeToColor(gen,diskType,diskSpeedLabel,$( '#' + targetTable + ' tbody tr td' ).last());
 
     /* Dell SSD fix */
     if (/SSD/i.test(diskType) && vendorType === 'dell' && formFactor === 'LFF') {
@@ -320,6 +386,30 @@ $( function() {
 
   function generateExample() {
     examples = {
+      hpGen8SFF: {
+        title: 'HP G8/9 2.5" (SFF)',
+	    vendorType: 'hp',
+	    fields: [
+          {gen: 'gen8', formFactor: 'SFF', diskSpeed: '7.2K', diskType: 'SATA', diskCapacity: '300 GB', diskSerial: '123456'},
+          {gen: 'gen8', formFactor: 'SFF', diskSpeed: '10K', diskType: 'SAS', diskCapacity: '500 GB', diskSerial: '123456'},
+          {gen: 'gen8', formFactor: 'SFF', diskSpeed: '15k', diskType: 'SAS', diskCapacity: '1 TB', diskSerial: '123456'},
+          {gen: 'gen8', formFactor: 'SFF', diskSpeed: 'SSD', diskType: 'SATA', diskCapacity: '256 GB', diskSerial: '123456'},
+          {gen: 'gen8', formFactor: 'SFF', diskSpeed: '7.2K', diskType: 'SATA', diskCapacity: '2 TB', diskSerial: '123456'},
+          {gen: 'gen8', formFactor: 'SFF', diskSpeed: '10K', diskType: 'SAS', diskCapacity: '900 GB', diskSerial: '123456'}
+        ]
+      },
+      hpGen8LFF: {
+        title: 'HP G8/9 3.5" (LFF)',
+        vendorType: 'hp',
+        fields: [
+         {gen: 'gen8', formFactor: 'LFF', diskSpeed: '7.2K', diskType: 'SATA', diskCapacity: '300 GB', diskSerial: '123456'},
+         {gen: 'gen8', formFactor: 'LFF', diskSpeed: '10K', diskType: 'SAS', diskCapacity: '500 GB', diskSerial: '123456'},
+         {gen: 'gen8', formFactor: 'LFF', diskSpeed: '15k', diskType: 'SAS', diskCapacity: '1 TB', diskSerial: '123456'},
+         {gen: 'gen8', formFactor: 'LFF', diskSpeed: 'SSD', diskType: 'SATA', diskCapacity: '256 GB', diskSerial: '123456'},
+         {gen: 'gen8', formFactor: 'LFF', diskSpeed: '7.2K', diskType: 'SATA', diskCapacity: '2 TB', diskSerial: '123456'},
+         {gen: 'gen8', formFactor: 'LFF', diskSpeed: '10K', diskType: 'SAS', diskCapacity: '900 GB', diskSerial: '123456'}
+        ]
+      },
       hpSFF: {
         title: 'HP G5/6/7 2.5" (SFF)',
         vendorType: 'hp',
@@ -378,7 +468,7 @@ $( function() {
 
       for (item in fields) {
         example = fields[item];
-        addUser($(this),example.formFactor,example.interfaceType, example.interfaceSpeed,example.diskSpeed,example.diskType,example.diskCapacity,example.diskSerial,'exampleTable', 7);
+        addUser($(this),example.formFactor,example.interfaceType, example.interfaceSpeed,example.diskSpeed,example.diskType,example.diskCapacity,example.diskSerial,'exampleTable', 7,example.gen);
       }
 
       $('table#exampleTable tbody').last().append('</tr>');
