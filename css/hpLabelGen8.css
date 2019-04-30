@@ -7,7 +7,7 @@ div.hpGen8 {
 }
 
 div.hpGen8.SFF {
-  width: 1.0cm;
+  width: 0.9cm;
   height: 1.2cm;
   background: black;
   -webkit-clip-path: polygon(0% 0%, 80% 0%, 100% 20%, 100% 80%, 80% 100%, 0% 100%);
@@ -34,7 +34,7 @@ div.hpGen8 .speed {
 div.hpGen8 .interface {
   vertical-align: center;  
   text-align: center;
-  margin-top: 0;
+  margin-top: 2%;
   margin-bottom: -6%;
   color: white;
   font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
@@ -52,10 +52,10 @@ div.hpGen8 .capacity {
 }
 
 div.hpGen8 .serial {
-  margin-left: -12%;
+  margin-left: 6%;
   vertical-align: center;
   margin-top: 3%;
-  text-align: center;
+  text-align: left;
   color: white;
   font-family: Arial, ' Helvetica Neue', Helvetica, sans-serif;
 }
