@@ -6,6 +6,7 @@ $( function() {
   capacity                = $( "#capacity" ),
   serial                  = $( "#serial" ),
   diskSpeedSelector       = $('#configuratorMain #diskSpeed label'),
+  dellcolorSelector       = $('#configuratorMain #dellcolor label'),
   diskTypeSelector        = $('#configuratorMain #diskType label'),
   interfaceTypeSelector   = $('#configuratorMain #interfaceType label'),
   interfaceSpeedSelector  = $('#configuratorMain #interfaceSpeed label'),
@@ -15,6 +16,7 @@ $( function() {
   var objectsToReset = [
     { object: diskSpeedSelector, defaultField: '7.2K' },
     { object: diskTypeSelector, defaultField: 'SATA' },
+    { object: dellcolorSelector, defaultField: 'dellgrey' },
     { object: interfaceTypeSelector, defaultField: 'singlePort' },
     { object: interfaceSpeedSelector, defaultField: 'SATA2/SAS' },
     { object: formFactorSelector, defaultField: 'SFF' },
@@ -60,21 +62,26 @@ $( function() {
         disableSelector(interfaceTypeSelector);
         disableSelector(interfaceSpeedSelector);
         disableSelector(genSelector);
-        serial.attr('disabled',true).removeAttr('required').attr('placeholder','Not Applicable').val('');
-        ['SASMDL', 'SATAMDL', 'FC', 'SSNW'].forEach( function(s) {
-          disableSelectorOption(diskTypeSelector, s);
-        });
+        disableSelector(diskTypeSelector);
+        //serial.attr('disabled',true).removeAttr('required').attr('placeholder','Not Applicable').val('');
+        //['SASMDL', 'SATAMDL', 'FC', 'SSNW'].forEach( function(s) {
+        //  disableSelectorOption(diskTypeSelector, s);
+        //});
       }
       if (vendorType === 'sm') {
         disableSelector(interfaceTypeSelector);
         disableSelector(interfaceSpeedSelector);
         disableSelector(diskSpeedSelector);
         disableSelector(genSelector);
+        disableSelector(dellcolorSelector);
         serial.attr('disabled',true).removeAttr('required').attr('placeholder','Not Applicable').val('');
         ['SASMDL', 'SATAMDL', 'FC', 'SSNW'].forEach( function(s) {
           disableSelectorOption(diskTypeSelector, s);
         });
-      }
+        }
+        if (vendorType === 'hp') {
+            disableSelector(dellcolorSelector);
+        }
       $('#configuratorMain').modal('show');
       $('#configuratorMain').validator('validate');
     });
@@ -111,6 +118,10 @@ $( function() {
           }
       }
     });
+    $('#dellcolor label').on('change', function () {
+        var dellcolor = $('#dellcolor input:radio:checked').parent().text().trim();
+        console.info('dellcolor ' + dellcolor + 'selected, exiting dellcolor change');
+    })
 
     $('#diskType label').on('change', function (){
       var diskType = $('#diskType input:radio:checked').parent().text().trim();
@@ -178,6 +189,28 @@ $( function() {
     if (/SSD/.test(type) && vendorType !== 'dell' && vendorType !== 'sm') { diskTypeObj.text(String.fromCharCode(160)); }
 
   }
+    function dellcolorset(formFactor, dellcolor) {
+        dellcolorObj = obj.find('.dellcolor');
+        labelColor = obj.find('.custcolor')
+
+        if (formFactor == "SFF") {
+            console.info('ayy lmao ');
+        }
+           /* switch (true) {
+                case /^fire$/gi.test(dellcolor):
+                    labelColor.addClass('dellfire');
+                    break;
+                case /^(SAS MDL|SATA|SATA MDL)$/gi.test(dellcolor):
+                    labelDivider.addClass('hpCyan'); break;
+                case /^Fibre Channel$/gi.test(type):
+                    labelDivider.addClass('hpOrange'); break;
+                case /^SSD$/gi.test(type):
+                    labelDivider.addClass('hpWhite'); break;
+                case /SSNW/gi.test(type):
+                    labelDivider.addClass('hpSSNW'); break;
+            */}
+        
+    
 
   function addUser(e, formFactor, interfaceType, interfaceSpeed, diskSpeed, diskType, diskCapacity, diskSerial, targetTable, targetNumber, gen ) {
     diskSpeedLabel = '';
@@ -276,8 +309,8 @@ $( function() {
       case 'dell':
         console.info ('Disk Speed Dell Label : ' + diskSpeedDell);
         switch (formFactor) {
-          case 'SFF':
-            labelString = "<div class='dell SFF'><div class='interface'>{0}</div><div class='capacity speed'>{1} {2}</div></div>".format(diskType,diskCapacity,diskSpeedDell);
+            case 'SFF':
+                labelString = "<div class='dell SFF'><div class='capacity'>{0}<div class='serial'>{1}</div></div>".format(diskCapacity, diskSerial);
             break;
           case 'LFF':
             labelString = "<div class='dell LFF'><div class='interface'>{0}</div><div class='capacity'>{1}</div><div class='speed'>{2}</div></div>".format(diskType,diskCapacity,diskSpeedDell);
@@ -321,7 +354,7 @@ $( function() {
       multiAddRunning = 0;
     }
 
-    if($('#addMore:checked').length === 0) {
+    if($('#addMore:checked').length == 0) {
       $('#configuratorMain').modal('hide');
     }
   }
@@ -462,12 +495,12 @@ $( function() {
         title: 'Dell Gen11/12/13/14 2.5" (SFF)',
         vendorType: 'dell',
         fields: [
-          {formFactor: 'SFF', interfaceType: '', interfaceSpeed: '', diskSpeed: '7.2K', diskType: 'SATA', diskCapacity: '512 GB', diskSerial: ''},
-          {formFactor: 'SFF', interfaceType: '', interfaceSpeed: '', diskSpeed: '5.4K', diskType: 'SATA', diskCapacity: '1 TB', diskSerial: ''},
-          {formFactor: 'SFF', interfaceType: '', interfaceSpeed: '', diskSpeed: '10K', diskType: 'SATA', diskCapacity: '2 TB', diskSerial: ''},
-          {formFactor: 'SFF', interfaceType: '', interfaceSpeed: '', diskSpeed: '15K', diskType: 'SATA', diskCapacity: '146 GB', diskSerial: ''},
-          {formFactor: 'SFF', interfaceType: '', interfaceSpeed: '', diskSpeed: 'SSD', diskType: 'SATA', diskCapacity: '480 GB', diskSerial: ''},
-          {formFactor: 'SFF', interfaceType: '', interfaceSpeed: '', diskSpeed: '', diskType: 'SSD', diskCapacity: '512 GB', diskSerial: ''},
+            { formFactor: 'SFF', interfaceType: '', interfaceSpeed: '', diskSpeed: '7.2K', diskType: 'SATA', diskCapacity: '512 GB', diskSerial: ('0000'.fontcolor("white"))},
+            { formFactor: 'SFF', interfaceType: '', interfaceSpeed: '', diskSpeed: '5.4K', diskType: 'SATA', diskCapacity: '1 TB', diskSerial: ('0000'.fontcolor("white"))},
+            { formFactor: 'SFF', interfaceType: '', interfaceSpeed: '', diskSpeed: '10K', diskType: 'SATA', diskCapacity: '2 TB', diskSerial: ('0000'.fontcolor("white"))},
+            { formFactor: 'SFF', interfaceType: '', interfaceSpeed: '', diskSpeed: '15K', diskType: 'SATA', diskCapacity: '146 GB', diskSerial: ('0000'.fontcolor("white"))},
+            { formFactor: 'SFF', interfaceType: '', interfaceSpeed: '', diskSpeed: 'SSD', diskType: 'SATA', diskCapacity: '480 GB', diskSerial: ('0000'.fontcolor("white")) },
+            { formFactor: 'SFF', interfaceType: '', interfaceSpeed: '', diskSpeed: '', diskType: 'SSD', diskCapacity: '512 GB', diskSerial: ('0000'.fontcolor( "white"))},
         ]
       },
       dellLFF: {
